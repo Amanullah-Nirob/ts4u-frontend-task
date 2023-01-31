@@ -1,10 +1,33 @@
-import { Button, Form, Input } from "antd";
+import { useRegisterUserMutation } from "@/redux/apiSlice/userApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { RegisterRequest } from "@/redux/interface/userinterface";
+import { Button, Form, Input, message } from "antd";
 type SizeType = Parameters<typeof Form>[0]["size"];
 
 const SingUp = ({ handleRegisterToggle }: any) => {
   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
+  const [registerUser, { data, isLoading, isError, error }] =
+    useRegisterUserMutation();
+  const [messageApi, contextHolder] = message.useMessage();
   const handleSubmit = async (values: any) => {
-    console.log(values);
+    try {
+      const registerInputValue = {
+        name: values.Name,
+        email: values.Email,
+        password: values.password,
+      };
+      const userData = await registerUser(
+        registerInputValue as RegisterRequest,
+      );
+      console.log(userData);
+    } catch (error: any) {
+      console.log(error);
+      messageApi.open({
+        type: "error",
+        content: "registration failed",
+      });
+    }
   };
 
   const validateMessages = {
@@ -20,6 +43,13 @@ const SingUp = ({ handleRegisterToggle }: any) => {
       return Promise.reject("The two passwords that you entered do not match!");
     }
     return Promise.resolve();
+  };
+  const validatePassword = (rule: any, value: string, callback: any) => {
+    if (value && value.length < 6) {
+      callback("Password must be at least 6 characters.");
+    } else {
+      callback();
+    }
   };
 
   return (
@@ -40,7 +70,10 @@ const SingUp = ({ handleRegisterToggle }: any) => {
           <Input type="email" placeholder="Email" />
         </Form.Item>
 
-        <Form.Item name="password" rules={[{ required: true }]}>
+        <Form.Item
+          name="password"
+          rules={[{ required: true }, { validator: validatePassword }]}
+        >
           <Input.Password type="password" placeholder="Password" />
         </Form.Item>
         <Form.Item
@@ -58,7 +91,7 @@ const SingUp = ({ handleRegisterToggle }: any) => {
               type="primary"
               htmlType="submit"
               className="register-form-button"
-              loading={false}
+              loading={isLoading}
               style={{ width: "100%" }}
             >
               Register
@@ -66,7 +99,7 @@ const SingUp = ({ handleRegisterToggle }: any) => {
           </Form.Item>
           <div className="bottom-question">
             <Button type="link" onClick={handleRegisterToggle}>
-              New User? Register
+              Already have an account?
             </Button>
           </div>
         </div>

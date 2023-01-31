@@ -1,10 +1,18 @@
+import { useLoginMutation } from "@/redux/apiSlice/userApi";
+import { LoginRequest } from "@/redux/interface/userinterface";
 import { Button, Form, Input } from "antd";
 type SizeType = Parameters<typeof Form>[0]["size"];
 
 const SingIn = ({ handleRegisterToggle }: any) => {
   const [form] = Form.useForm();
+  const [login, { isLoading, isError, error }] = useLoginMutation();
   const handleSubmit = async (values: any) => {
-    console.log(values);
+    try {
+      const loginData = await login(values as LoginRequest).unwrap();
+      console.log(loginData);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   const validateMessages = {
@@ -24,7 +32,7 @@ const SingIn = ({ handleRegisterToggle }: any) => {
         validateMessages={validateMessages}
         className="register-form"
       >
-        <Form.Item name={"Email"} rules={[{ required: true, type: "email" }]}>
+        <Form.Item name={"email"} rules={[{ required: true, type: "email" }]}>
           <Input type="email" placeholder="Email" />
         </Form.Item>
 
@@ -38,7 +46,7 @@ const SingIn = ({ handleRegisterToggle }: any) => {
               type="primary"
               htmlType="submit"
               className="register-form-button"
-              loading={false}
+              loading={isLoading}
               style={{ width: "100%" }}
             >
               Register
@@ -46,7 +54,7 @@ const SingIn = ({ handleRegisterToggle }: any) => {
           </Form.Item>
           <div className="bottom-question">
             <Button type="link" onClick={handleRegisterToggle}>
-              Already have an account?
+              New User? Register
             </Button>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import MainHome from "@/components/home";
 import Head from "next/head";
 
 function Home() {
@@ -6,7 +7,8 @@ function Home() {
       <Head>
         <title>AmanSomething</title>
       </Head>
-      <div>ts4u job task</div>
+
+      <MainHome />
     </>
   );
 }

@@ -3,6 +3,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { selectCurrentUser } from "@/redux/slice/auth/authSlice";
 import jwtDecode from "jwt-decode";
 import { NextComponentType } from "next";
+import Router from "next/router";
 
 function withAuth(Component: NextComponentType) {
   const Auth = (props: JSX.IntrinsicAttributes) => {
@@ -10,6 +11,7 @@ function withAuth(Component: NextComponentType) {
 
     // If user is not logged in, return login component
     if (!user?.token) {
+      Router.push("/auth");
       return <AuthUser />;
     }
 
@@ -17,6 +19,7 @@ function withAuth(Component: NextComponentType) {
       const token = user.token.split(" ")[1];
       const data: any = jwtDecode(token);
       if (!data._id) {
+        Router.push("/auth");
         return <AuthUser />;
       }
     }

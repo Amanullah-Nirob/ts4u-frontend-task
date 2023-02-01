@@ -1,0 +1,14 @@
+.content-home {
+  height: 100%;
+  overflow-x: hidden;
+  .ant-card {
+    margin-bottom: 25px;
+    .ant-card-cover {
+      height: 11rem;
+      img.ant-image-img {
+        height: 11rem !important;
+        object-fit: contain !important;
+      }
+    }
+  }
+}

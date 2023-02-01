@@ -4,6 +4,7 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 
 // internal imports
+import { productApi } from "./apiSlice/productApiSlice";
 import { userApi } from "./apiSlice/userApi";
 import authSliceReducer from "./slice/auth/authSlice";
 import storage from "./sync-storage";
@@ -16,6 +17,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
+  [productApi.reducerPath]: productApi.reducer,
   auth: authSliceReducer,
 });
 
@@ -27,7 +29,9 @@ export const store = configureStore({
     getDefaultMiddleware({
       immutableCheck: false,
       serializableCheck: false,
-    }).concat(userApi.middleware),
+    })
+      .concat(userApi.middleware)
+      .concat(productApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

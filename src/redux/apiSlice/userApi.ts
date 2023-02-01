@@ -5,16 +5,17 @@ import {
   RegisterRequest,
   verifyotpReguest,
 } from "../interface/userinterface";
+import { RootState } from "../store";
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_APIURL}/user`,
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).auth?.loggedInUser?.token;
-      // if (token) {
-      //   headers.set("Authorization", `Bearer ${token}`);
-      // }
+      const token = (getState() as RootState).auth?.loggedInUser?.token;
+      if (token) {
+        headers.set("Authorization", `${token}`);
+      }
       headers.set("Content-Type", `application/json`);
       return headers;
     },
@@ -46,6 +47,13 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    profile: builder.mutation<any, any>({
+      query: (data) => ({
+        url: "/verify",
+        method: "POST",
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -53,4 +61,5 @@ export const {
   useRegisterUserMutation,
   useLoginMutation,
   useVerifyotpMutation,
+  useProfileMutation,
 } = userApi;

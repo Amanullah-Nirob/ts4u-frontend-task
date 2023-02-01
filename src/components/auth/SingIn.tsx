@@ -15,7 +15,7 @@ const SingIn = ({ handleRegisterToggle }: any) => {
       const loginData = await login(values as LoginRequest).unwrap();
       message.success("login successful");
       dispatch(setLoggedInUser(loginData));
-      Router.push("/");
+      Router.push("/profile");
     } catch (error: any) {
       message.error(error.data.message);
       console.log(error);

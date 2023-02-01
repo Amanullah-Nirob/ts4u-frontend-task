@@ -1,3 +1,5 @@
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentUser } from "@/redux/slice/auth/authSlice";
 import {
   FullscreenOutlined,
   MenuFoldOutlined,
@@ -10,6 +12,7 @@ import SearchProduct from "../header/SearchProduct";
 
 const { Header } = Layout;
 function LayoutHeader() {
+  const loggedInUser = useAppSelector(selectCurrentUser);
   return (
     <Header
       style={{
@@ -33,9 +36,16 @@ function LayoutHeader() {
           <FullscreenOutlined />
         </div>
         <div className="avater">
-          <Link href="/profile">
-            <p>Profile</p>
-          </Link>
+          <div className="link">
+            {!loggedInUser?.token && (
+              <Link href="/auth">
+                <p>Login</p>
+              </Link>
+            )}
+            <Link href="/profile">
+              <p>Profile</p>
+            </Link>
+          </div>
 
           <Image
             src="/static/images/aman.png"

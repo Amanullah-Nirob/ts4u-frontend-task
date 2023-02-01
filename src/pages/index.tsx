@@ -7,7 +7,6 @@ function Home() {
       <Head>
         <title>AmanSomething</title>
       </Head>
-
       <MainHome />
     </>
   );

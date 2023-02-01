@@ -27,7 +27,7 @@ const Profile = () => {
           <Divider />
           <Title level={2}>{user.name}</Title>
           <p>{user.email}</p>
-          <p>{user.role}</p>
+          <p>Role: {user.role}</p>
         </div>
       ) : (
         <div style={{ textAlign: "center" }}>

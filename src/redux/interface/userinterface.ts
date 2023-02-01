@@ -8,17 +8,7 @@ export interface LoginRequest {
   email: string;
   password: string;
 }
-
-export interface AuthResponse {
-  _id: string;
-  name: string;
+export interface verifyotpReguest {
+  otp: string;
   email: string;
-  birthYear: number;
-  subscribe: Boolean;
-  role: string;
-  gender: string;
-  cloudinary_id: string;
-  profilePic: string;
-  token: string;
-  expiryTime: number;
 }

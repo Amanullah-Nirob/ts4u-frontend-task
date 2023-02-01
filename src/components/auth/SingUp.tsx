@@ -1,15 +1,13 @@
 import { useRegisterUserMutation } from "@/redux/apiSlice/userApi";
-import { useAppDispatch } from "@/redux/hooks";
 import { RegisterRequest } from "@/redux/interface/userinterface";
 import { Button, Form, Input, message } from "antd";
+import { useRouter } from "next/router";
 type SizeType = Parameters<typeof Form>[0]["size"];
 
-const SingUp = ({ handleRegisterToggle }: any) => {
+const SingUp = ({ handleRegisterToggle, setVerifyot }: any) => {
   const [form] = Form.useForm();
-  const dispatch = useAppDispatch();
-  const [registerUser, { data, isLoading, isError, error }] =
-    useRegisterUserMutation();
-  const [messageApi, contextHolder] = message.useMessage();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const router = useRouter();
   const handleSubmit = async (values: any) => {
     try {
       const registerInputValue = {
@@ -17,16 +15,20 @@ const SingUp = ({ handleRegisterToggle }: any) => {
         email: values.Email,
         password: values.password,
       };
-      const userData = await registerUser(
+      const data = await registerUser(
         registerInputValue as RegisterRequest,
-      );
-      console.log(userData);
+      ).unwrap();
+
+      if (data && data.isOtpSend === true) {
+        message.success(
+          "OTP has been sent  your email Please verify! for the register fulfilled",
+        );
+        router.replace(`/auth?email=${data.email}`);
+        setVerifyot(true);
+      }
     } catch (error: any) {
       console.log(error);
-      messageApi.open({
-        type: "error",
-        content: "registration failed",
-      });
+      message.error(error.data.message);
     }
   };
 

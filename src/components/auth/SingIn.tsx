@@ -1,16 +1,23 @@
 import { useLoginMutation } from "@/redux/apiSlice/userApi";
+import { useAppDispatch } from "@/redux/hooks";
 import { LoginRequest } from "@/redux/interface/userinterface";
-import { Button, Form, Input } from "antd";
+import { setLoggedInUser } from "@/redux/slice/auth/authSlice";
+import { Button, Form, Input, message } from "antd";
+import Router from "next/router";
 type SizeType = Parameters<typeof Form>[0]["size"];
 
 const SingIn = ({ handleRegisterToggle }: any) => {
   const [form] = Form.useForm();
   const [login, { isLoading, isError, error }] = useLoginMutation();
+  const dispatch = useAppDispatch();
   const handleSubmit = async (values: any) => {
     try {
       const loginData = await login(values as LoginRequest).unwrap();
-      console.log(loginData);
+      message.success("login successful");
+      dispatch(setLoggedInUser(loginData));
+      Router.push("/");
     } catch (error: any) {
+      message.error(error.data.message);
       console.log(error);
     }
   };
@@ -49,7 +56,7 @@ const SingIn = ({ handleRegisterToggle }: any) => {
               loading={isLoading}
               style={{ width: "100%" }}
             >
-              Register
+              Login
             </Button>
           </Form.Item>
           <div className="bottom-question">

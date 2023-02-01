@@ -1,0 +1,30 @@
+.verify-otp {
+  .verify-info {
+    margin-bottom: 30px;
+    .title {
+      text-align: center;
+      margin-bottom: 23px;
+      h3 {
+        font-size: 22px;
+        margin-bottom: 6px;
+        color: #3a3939;
+      }
+    }
+    .time-left {
+      text-align: center;
+      h2 {
+        margin-top: 11px;
+        span {
+          background-color: #000;
+          color: #fff;
+          padding: 3px 14px;
+          border-radius: 5px;
+          margin: 10px 5px;
+        }
+      }
+    }
+  }
+}
+.otp-action {
+  text-align: center;
+}

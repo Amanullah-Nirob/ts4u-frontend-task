@@ -1,5 +1,6 @@
 import SingIn from "@/components/auth/SingIn";
 import SingUp from "@/components/auth/SingUp";
+import Verifyotp from "@/components/auth/Verifyotp";
 import { Col, Row } from "antd";
 import Image from "next/image";
 import { useState } from "react";
@@ -7,7 +8,7 @@ import authImage from "../../../public/static/images/auth.png";
 import logo from "../../../public/static/images/fav.png";
 const AuthUser = () => {
   const [registerOpen, setRegisterOpen] = useState(false);
-
+  const [verifyotp, setVerifyotp] = useState(false);
   const handleRegisterToggle = () => {
     setRegisterOpen(!registerOpen);
   };
@@ -54,8 +55,13 @@ const AuthUser = () => {
                 <h2 style={{ color: "#475768" }}>Aman Chat</h2>
               </div>
               <div className="login-inputs-area">
-                {registerOpen ? (
-                  <SingUp handleRegisterToggle={handleRegisterToggle} />
+                {verifyotp ? (
+                  <Verifyotp />
+                ) : registerOpen ? (
+                  <SingUp
+                    handleRegisterToggle={handleRegisterToggle}
+                    setVerifyot={setVerifyotp}
+                  />
                 ) : (
                   <SingIn handleRegisterToggle={handleRegisterToggle}></SingIn>
                 )}

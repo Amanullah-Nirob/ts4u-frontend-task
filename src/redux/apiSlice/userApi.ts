@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import {
-  AuthResponse,
   LoginRequest,
   RegisterRequest,
+  verifyotpReguest,
 } from "../interface/userinterface";
 
 export const userApi = createApi({
@@ -30,9 +30,17 @@ export const userApi = createApi({
       invalidatesTags: ["User"],
     }),
 
-    login: builder.mutation<AuthResponse, LoginRequest>({
+    login: builder.mutation<any, LoginRequest>({
       query: (data) => ({
         url: "/signin",
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+      invalidatesTags: ["User"],
+    }),
+    verifyotp: builder.mutation<any, verifyotpReguest>({
+      query: (data) => ({
+        url: "/verifyotp",
         method: "POST",
         body: JSON.stringify(data),
       }),
@@ -41,4 +49,8 @@ export const userApi = createApi({
   }),
 });
 
-export const { useRegisterUserMutation, useLoginMutation } = userApi;
+export const {
+  useRegisterUserMutation,
+  useLoginMutation,
+  useVerifyotpMutation,
+} = userApi;
